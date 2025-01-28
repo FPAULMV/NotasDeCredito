@@ -1,0 +1,155 @@
+Identificar por: TipoDeComprobante="E" ()
+
+EXEC Operation.StpCreditNoteVendorSave
+    @vendorId = 1, # ap_vendor [Tabla] (Siempre es Pemex = 1)
+    @stationId = 44, # inv_station Numero de estacion de petrodiesel.  
+    @date = '2024-04-30', # Viene en el XML Comprobante/Fecha="2025-01-01T01:50:07" 
+    @productName = 'RECUPERACION DE FLETE', Concepto/Descripcion="RECUPERACION DE FLETE" o "Bonificacion" 
+	@remision = '74708', # <pm:NREMISION>RC-636-66750-06/01/2025-144738</pm:NREMISION> O <pm:A_RELACION>RP-636-66750-20/12/2024-1575050</pm:A_RELACION>
+    @invoice = '61429769', Invoice relacionado a la remicion.
+    @creditNoteNumber = 'NCP-1377',  # Concatenar Comprobante/Serie="NC" + Comprobante/Folio="3376204"
+    @tarTad = '629', # <pm:NREMISION>RC-636-66750-06/01/2025-144738</pm:NREMISION>
+    @tax = 1240.97, # Impuestos/Traslados/Traslado/Importe="101797.75"
+    @total = 8997.06, # Comprobante/Total="752651.85" 
+    @destinationName = '92', 
+    @FiscalFolio = '4B7B75EA-E368-49FD-9D5A-C9A3673D3814' # Complemento/TimbreFiscalDigital/UUID="287B9BD5-E9BE-416C-AD0E-D9DEF0EA3C05" 
+GO
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante Version="4.0" Serie="NC" Folio="3376204" Fecha="2025-01-06T06:49:19" Sello="pE8sGAhKcdXq4AgcUeivqTOo4m+m3x/ZZTNMTADnEfRCyHIDQxmaNzhDzKfi1HwQ6i0TlQA7H+kH4tARt8PrPtj7UHze4D4FGXrE1jFMdknzch+p207Y6tsqJvRlwePZgZArt1xLG3Sj0vlyde+7F5r2TXagz4XLIWuUAIBzYwioSBoPURt4kFUu17uvkYaOdls9VVTYxbW1baxqkq49fyhFDHVrESSoWcmh+LauKdwpUfR8Oc4cZU98TeVAuHMRXPBsKfn8Ph+4KPxOmLJoa9ZspYPxYBO31FW0TKJSbLXb9wnyiDikESGKgP+uMFGo3iNbhMzwQ9VpztIyKNU2ZQ==" FormaPago="99" NoCertificado="00001000000702005719" Certificado="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" CondicionesDePago="C R E D I T O" SubTotal="2543.54" Moneda="MXN" Total="2747.02" TipoDeComprobante="E" Exportacion="01" MetodoPago="PPD" LugarExpedicion="22710" xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd">
+  <cfdi:CfdiRelacionados TipoRelacion="01">
+    <cfdi:CfdiRelacionado UUID="3064D2E0-5D55-487F-83E2-1A0EAB24A530" />
+  </cfdi:CfdiRelacionados>
+  <cfdi:Emisor Rfc="PTI151101TE5" Nombre="PEMEX TRANSFORMACION INDUSTRIAL" RegimenFiscal="601" />
+  <cfdi:Receptor Rfc="PCE940510FA9" Nombre="PETRODIESEL DEL CENTRO" DomicilioFiscalReceptor="36300" RegimenFiscalReceptor="601" UsoCFDI="G03" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="15101514" Cantidad="1.000" ClaveUnidad="LTR" Unidad="LT." NoIdentificacion="H/9857/COM/2015-32011" Descripcion="RECUPERACION DE FLETE" ValorUnitario="2543.54000" Importe="2543.54" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="2543.54" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.080000" Importe="203.48" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosTrasladados="203.48">
+    <cfdi:Traslados>
+      <cfdi:Traslado Base="2543.54" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.080000" Importe="203.48" />
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" Version="1.1" UUID="9F84F6C2-388D-45B4-90DD-D1EEDA0286D8" FechaTimbrado="2025-01-06T08:51:24" RfcProvCertif="ASE0201179X0" SelloCFD="pE8sGAhKcdXq4AgcUeivqTOo4m+m3x/ZZTNMTADnEfRCyHIDQxmaNzhDzKfi1HwQ6i0TlQA7H+kH4tARt8PrPtj7UHze4D4FGXrE1jFMdknzch+p207Y6tsqJvRlwePZgZArt1xLG3Sj0vlyde+7F5r2TXagz4XLIWuUAIBzYwioSBoPURt4kFUu17uvkYaOdls9VVTYxbW1baxqkq49fyhFDHVrESSoWcmh+LauKdwpUfR8Oc4cZU98TeVAuHMRXPBsKfn8Ph+4KPxOmLJoa9ZspYPxYBO31FW0TKJSbLXb9wnyiDikESGKgP+uMFGo3iNbhMzwQ9VpztIyKNU2ZQ==" NoCertificadoSAT="00001000000519281088" SelloSAT="gRuGh7lc7S+2tMrcq2EGfVkQtBVJXA+CsKSkhtahVxHuPZUaGgq7ble2U/OCK010s+Qi+EcMFtRvgAw6MvbzQNmN9s1wIeu0b5oVz/Gb7RrtPpb85sYkzBhMdCNppiLu+C2DtbXtREOjvicU/9vnupydEZG96GQDsrcj2WwXKwaV/kt7POdvuZmY4HxJVZHYqDdjaB70ObgW9YLC4rWaQ52WZ/QsXlShlOtKDfeWxrndZIb2q/5lksvnqLA72Y586uHRwoY4ZUyo1tIQxu6OwVJc19gyRVnltYI/GdHm3Rko/u+FtL3Jh9T4JyNv9t7gaxMwAbp5kYaXueHqB+ozVw==" />
+  </cfdi:Complemento>
+  <cfdi:Addenda>
+    <pm:Addenda_Pemex xsi:schemaLocation="http://pemex.com/facturaelectronica/addenda/v2 https://pemex.reachcore.com/schemas/addenda-pemex-v2.xsd" xmlns:pm="http://pemex.com/facturaelectronica/addenda/v2">
+      <pm:NREMISION>RC-636-66750-06/01/2025-144738</pm:NREMISION>
+      <pm:A_RELACION>RP-636-66750-20/12/2024-1575050</pm:A_RELACION>
+    </pm:Addenda_Pemex>
+  </cfdi:Addenda>
+</cfdi:Comprobante>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante 
+    Version="4.0" 
+    Serie="FP" 
+    Folio="61552543" 
+    Fecha="2025-01-01T01:50:07" 
+    Sello="Hgj5f1gKMJo4xhcqhp6bMgdCpoMs3hUe4GRFLwR3YzcZ5qWrsLFhK+slIs3g/ztguWAI5KmMHE4abtCRmT8rdROJO7Vr9PSs/TMC4aBBVsPhtSK7oRRqlhTlAu3MUxso1wZKEsdixcclfZQthl3S6qL8nIemMWvfLrSqAdufCk115qJIYxTOlSRKR+I2S8KLwTH17qSjVebBNfX3Cs/G3HlYAzawPPxJQ1y116ktE6Uxbmbnb5dVpurc0j7hIb7PtLJ2BiT79suQmXi4sMTYsy+AznDryURRNqW9QwNiKu4OBoU02OkpACz52QeugrFn3PiuL7kGsUdMQSs2EEwMqQ==" 
+    FormaPago="99" 
+    NoCertificado="00001000000702005719" 
+    Certificado="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" 
+    CondicionesDePago="CREDITO A 30 DIAS FECHA FACTURA" 
+    SubTotal="685073.68" 
+    Descuento="34219.58" 
+    Moneda="MXN" 
+    Total="752651.85" 
+    TipoDeComprobante="I" 
+    Exportacion="01" 
+    MetodoPago="PPD" 
+    LugarExpedicion="11300" 
+    xmlns:cfdi="http://www.sat.gob.mx/cfd/4" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd">
+
+  <cfdi:Emisor 
+    Rfc="PTI151101TE5" 
+    Nombre="PEMEX TRANSFORMACION INDUSTRIAL" 
+    RegimenFiscal="601" />
+
+  <cfdi:Receptor 
+    Rfc="PCE940510FA9" 
+    Nombre="PETRODIESEL DEL CENTRO" 
+    DomicilioFiscalReceptor="36300" 
+    RegimenFiscalReceptor="601" 
+    UsoCFDI="G01" />
+
+  <cfdi:Conceptos>
+    <cfdi:Concepto 
+        ClaveProdServ="15101505" 
+        Cantidad="30912.000" 
+        ClaveUnidad="LTR" 
+        Unidad="LT." 
+        NoIdentificacion="H/9857/COM/2015-61552543-34006" 
+        Descripcion="PEMEX DIESEL" 
+        ValorUnitario="22.16206" 
+        Importe="685073.68" 
+        Descuento="34219.58" 
+        ObjetoImp="02">
+
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado 
+            Base="636235.96" 
+            Impuesto="002" 
+            TipoFactor="Tasa" 
+            TasaOCuota="0.160000" 
+            Importe="101797.75" />
+
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+
+  <cfdi:Impuestos 
+    TotalImpuestosTrasladados="101797.75">
+
+    <cfdi:Traslados>
+      <cfdi:Traslado 
+        Base="636235.96" 
+        Impuesto="002" 
+        TipoFactor="Tasa" 
+        TasaOCuota="0.160000" 
+        Importe="101797.75" />
+
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+
+    <tfd:TimbreFiscalDigital 
+        xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" 
+        Version="1.1" 
+        UUID="287B9BD5-E9BE-416C-AD0E-D9DEF0EA3C05" 
+        FechaTimbrado="2025-01-01T01:50:26" 
+        RfcProvCertif="ASE0201179X0" 
+        SelloCFD="Hgj5f1gKMJo4xhcqhp6bMgdCpoMs3hUe4GRFLwR3YzcZ5qWrsLFhK+slIs3g/ztguWAI5KmMHE4abtCRmT8rdROJO7Vr9PSs/TMC4aBBVsPhtSK7oRRqlhTlAu3MUxso1wZKEsdixcclfZQthl3S6qL8nIemMWvfLrSqAdufCk115qJIYxTOlSRKR+I2S8KLwTH17qSjVebBNfX3Cs/G3HlYAzawPPxJQ1y116ktE6Uxbmbnb5dVpurc0j7hIb7PtLJ2BiT79suQmXi4sMTYsy+AznDryURRNqW9QwNiKu4OBoU02OkpACz52QeugrFn3PiuL7kGsUdMQSs2EEwMqQ==" 
+        NoCertificadoSAT="00001000000519281088" 
+        SelloSAT="VJ0pSMJEy4BLm79LdUrQyIlmAerzl/+6d/RzoB1ysGlPwul87IBF57pYHwxPmxukCLa9iA2lwEfA8q5G1GQBvzee/Xm5ec0FAG6fLtfWZBwKmaBVLWaj7OAu/eL+hcVum5YkQbrq1Ux2/8+NrgoDh1BEFdnDpLUqyDsminM0vfwMsm3fH5jHbeb8gSn7MsO2bmvljI21uj/UiKYDzNuYd3nnIeK7nJN8G6PCsTi2xMSZBjDvdknjm0bmBl+0XS8COYMlKgiGwpX6VEf9mDQhP5fOf72saN5pvvkb2GZJzVr5LQFslDVcz+0pJnktBrrBNqWUDu1nCmYEfxN6+Gxb+Q==" />
+        
+  </cfdi:Complemento>
+  <cfdi:Addenda>
+
+    <pm:Addenda_Pemex 
+        xsi:schemaLocation="http://pemex.com/facturaelectronica/addenda/v2 https://pemex.reachcore.com/schemas/addenda-pemex-v2.xsd" 
+        xmlns:pm="http://pemex.com/facturaelectronica/addenda/v2">
+
+      <pm:NREMISION>RP-628-66750-01/01/2025-1141431 EMITIDA POR                 30.912 M3</pm:NREMISION>
+      <pm:PLAZO>FECHA DE INICIO DE CREDITO: 01/01/2025</pm:PLAZO>
+      <pm:VUREGION>Destino cliente: 286</pm:VUREGION>
+      
+    </pm:Addenda_Pemex>
+  </cfdi:Addenda>
+</cfdi:Comprobante>
