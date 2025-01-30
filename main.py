@@ -135,23 +135,6 @@ class GetPath():
         self.insert_sql(insert)
         print(f"Datos Insertados en la tabla.\n")
 
-        exec_ = f'''
-        EXEC Operation.StpCreditNoteVendorSave
-            @vendorId = 1,
-            @stationId = 44, 
-            @date = '{fecha}',
-            @productName = '{description}',
-            @remision = '{rem}',
-            @invoice = '{rel}',
-            @creditNoteNumber = '{creditnotenumber}',
-            @tarTad = '{tad}',
-            @tax = {importe},
-            @total = {total},
-            @destinationName = '{destinationid}',
-            @FiscalFolio = '{uuid}' 
-        GO'''
-        return exec_
-
     except ET.ParseError:
         print("Error al analizar el XML. Verifica el formato del archivo.")
         return
@@ -159,38 +142,6 @@ class GetPath():
         print(f"Se produjo un error inesperado: {e}")
         return
 
-  def query_sql(self, query):
-      engine = None
-      try:
-          conn_str = f"mssql+pymssql://{config('user_name')}:{quote_plus(config('password'))}@{config('server')}/{config('database')}"
-          engine = sqlalchemy.create_engine(conn_str)
-          resultado = pd.read_sql(query, engine)
-      except Exception as e:
-          print("Error en la conexión o en la ejecución del query:\n", e)
-          if engine:
-              engine.dispose()
-      else:
-          return resultado
-    
-  def insert_sql(self, query):
-      try:
-          conn_str = (
-              f"DRIVER={config('driver')};"
-              f"SERVER={config('server')};"
-              f"DATABASE={config('database')};"
-              f"UID={config('user_name')};"
-              f"PWD={config('password')}"
-          )
-          with pyodbc.connect(conn_str) as conn:
-              with conn.cursor() as cursor:
-                  cursor.execute(query)
-                  conn.commit()
-      except pyodbc.Error as e:
-          print("Error en la conexión o en la ejecución del query:", e)
-      except Exception as e:
-          print("Ocurrió un error inesperado:", e)
-      else:
-          conn.close()
 
 
 
@@ -199,7 +150,6 @@ if __name__ == '__main__':
   path = GetPath()
 
   path_base = path.files
-  print(f"Notas de credito ya registradas:\n{path.registred_nc}")
   zip_files = path.filter_extension(path_base, ".zip")
   xml_files = path.filter_extension(path_base, ".xml")
 
